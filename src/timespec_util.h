@@ -7,6 +7,11 @@
 
 #include <time.h>
 
+struct itimerspec {
+    struct timespec it_interval; /* Timer interval */
+    struct timespec it_value;    /* Initial expiration */
+};
+
 // TODO(jan): Remove this once the definition is exposed in <sys/time.h> in
 // all supported FreeBSD versions.
 #ifndef timespeccmp

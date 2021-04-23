@@ -333,6 +333,9 @@ struct {								\
  * always zero, this implementation sets those bits to indicate
  * that the left or right child of the tree node is "red".
  */
+#ifdef __APPLE__
+#define __uintptr_t uintptr_t
+#endif
 #define RB_UP(elm, field)		(elm)->field.rbe_parent
 #define RB_BITS(elm, field)		(*(__uintptr_t *)&RB_UP(elm, field))
 #define RB_RED_L			((__uintptr_t)1)

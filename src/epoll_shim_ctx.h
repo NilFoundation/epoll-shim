@@ -11,6 +11,8 @@
 #include "signalfd_ctx.h"
 #include "timerfd_ctx.h"
 
+#include <epoll-shim/detail/poll.h>
+
 struct fd_context_map_node_;
 typedef struct fd_context_map_node_ FDContextMapNode;
 

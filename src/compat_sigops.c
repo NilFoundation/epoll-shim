@@ -51,4 +51,20 @@ compat_sigandset(sigset_t *dest, sigset_t const *left, sigset_t const *right)
 	}
 	return 0;
 }
+
+#elif defined(__APPLE__)
+
+int
+compat_sigisemptyset(sigset_t const *set)
+{
+    return *set == 0;
+}
+
+int
+compat_sigandset(sigset_t *dest, sigset_t const *left, sigset_t const *right)
+{
+    *dest = *left & *right;
+    return 0;
+}
+
 #endif
