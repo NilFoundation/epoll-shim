@@ -20,6 +20,26 @@
 #define ppoll pollts
 #endif
 
+int poll(struct pollfd *a, nfds_t b, int c) {
+    return epoll_shim_poll(a, b, c);
+}
+
+int ppoll(struct pollfd *a, nfds_t b, struct timespec const *c, sigset_t const *d) {
+    return epoll_shim_ppoll(a, b, c, d);
+}
+
+ssize_t write(int a, void const *b, size_t c) {
+    return epoll_shim_write(a, b, c);
+}
+
+ssize_t read(int a, void *b, size_t c) {
+    return epoll_shim_read(a, b, c);
+}
+
+int close(int a) {
+    return epoll_shim_close(a);
+}
+
 static errno_t
 epollfd_close(FDContextMapNode *node)
 {

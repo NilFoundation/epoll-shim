@@ -59,8 +59,7 @@ if(NOT ALLOWS_ONESHOT_TIMERS_WITH_TIMEOUT_ZERO)
     INTERFACE QUIRK_EVFILT_TIMER_DISALLOWS_ONESHOT_TIMEOUT_ZERO)
 endif()
 
-add_library(
-  epoll-shim
+add_library(epoll-shim
   epoll_shim_ctx.c
   epoll.c
   epollfd_ctx.c
@@ -83,13 +82,14 @@ target_link_libraries(
 target_include_directories(
   epoll-shim
   PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-  PUBLIC $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/install-include>)
+  PUBLIC $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
 
 set(_headers
     "epoll-shim/detail/common.h"
     "epoll-shim/detail/poll.h"
     "epoll-shim/detail/read.h"
     "epoll-shim/detail/write.h"
+
     "sys/epoll.h"
     "sys/signalfd.h"
     "sys/timerfd.h")
@@ -98,7 +98,7 @@ if(NOT HAVE_EVENTFD)
 endif()
 foreach(_header IN LISTS _headers)
   configure_file("${PROJECT_SOURCE_DIR}/include/${_header}"
-                 "${PROJECT_BINARY_DIR}/install-include/${_header}" COPYONLY)
+                 "${PROJECT_BINARY_DIR}/include/${_header}" COPYONLY)
 endforeach()
 
 set_target_properties(epoll-shim PROPERTIES SOVERSION 0)

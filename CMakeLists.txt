@@ -68,7 +68,7 @@ install(
     LIBRARY
     INCLUDES
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-install(DIRECTORY "${PROJECT_BINARY_DIR}/install-include/" TYPE INCLUDE)
+install(DIRECTORY "${PROJECT_BINARY_DIR}/include/" TYPE INCLUDE)
 
 install(
     EXPORT ${PROJECT_NAME}-targets

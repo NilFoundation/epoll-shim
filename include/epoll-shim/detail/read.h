@@ -4,6 +4,6 @@
 #include <unistd.h> /* IWYU pragma: keep */
 
 extern ssize_t epoll_shim_read(int, void *, size_t);
-#define read epoll_shim_read
+extern inline ssize_t read(int a, void *b, size_t c);
 
 #endif

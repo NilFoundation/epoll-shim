@@ -24,7 +24,6 @@ int eventfd_write(int, eventfd_t);
 #include <epoll-shim/detail/read.h>
 #include <epoll-shim/detail/write.h>
 
-
 #ifdef __cplusplus
 }
 #endif

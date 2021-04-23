@@ -44,7 +44,6 @@ struct signalfd_siginfo {
 #include <epoll-shim/detail/poll.h>
 #include <epoll-shim/detail/read.h>
 
-
 #ifdef __cplusplus
 }
 #endif

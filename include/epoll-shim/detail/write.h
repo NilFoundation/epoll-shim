@@ -4,6 +4,6 @@
 #include <unistd.h> /* IWYU pragma: keep */
 
 extern ssize_t epoll_shim_write(int, void const *, size_t);
-#define write epoll_shim_write
+extern ssize_t write(int a, void const *b, size_t c);
 
 #endif
