@@ -48,7 +48,7 @@ timerfd_ctx_read_or_block(FDContextMapNode *node, uint64_t *value)
 }
 
 static errno_t
-timerfd_read(FDContextMapNode *node, void *buf, size_t nbytes,
+timerfd_read_impl(FDContextMapNode *node, void *buf, size_t nbytes,
     size_t *bytes_transferred)
 {
 	errno_t ec;
@@ -100,12 +100,34 @@ timerfd_realtime_change(FDContextMapNode *node)
 }
 
 static FDContextVTable const timerfd_vtable = {
-	.read_fun = timerfd_read,
+	.read_fun = timerfd_read_impl,
 	.write_fun = fd_context_default_write,
 	.close_fun = timerfd_close,
 	.poll_fun = timerfd_poll,
 	.realtime_change_fun = timerfd_realtime_change,
 };
+
+EPOLL_SHIM_EXPORT
+int
+timerfd_read(int timerid, void *dst, size_t len)
+{
+    size_t recv;
+
+	FDContextMapNode *node = epoll_shim_ctx_find_node(&epoll_shim_ctx,
+	    timerid);
+	if (!node || node->vtable != &timerfd_vtable) {
+		struct stat sb;
+		return (timerid < 0 || fstat(timerid, &sb)) ? EBADF : EINVAL;
+	}
+
+    errno_t ec = timerfd_read_impl(node, dst, len, &recv);
+    if (ec != 0) {
+	    errno = ec;
+	    return -1;
+    } else {
+	    return recv;
+    }
+}
 
 static errno_t
 timerfd_create_impl(FDContextMapNode **node_out, int clockid, int flags)

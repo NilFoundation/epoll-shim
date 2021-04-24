@@ -23,6 +23,7 @@ int timerfd_create(int, int);
 int timerfd_settime(int, int, struct itimerspec const *, struct itimerspec *);
 int timerfd_gettime(int, struct itimerspec *);
 
+int timerfd_read(int, void *, size_t);
 
 #include <epoll-shim/detail/common.h>
 #include <epoll-shim/detail/poll.h>
