@@ -6,14 +6,14 @@ option(ENABLE_COMPILER_WARNINGS "enable compiler warnings" OFF)
 
 if(ENABLE_COMPILER_WARNINGS)
     add_compile_options(
-        "-Wall"
-        "-Wextra"
-        "-Wconversion"
-        "-Wsign-conversion"
-        "-Wmissing-prototypes"
-        "-Werror=implicit-function-declaration"
-        "-Werror=return-type"
-        "-Werror=incompatible-pointer-types")
+            "-Wall"
+            "-Wextra"
+            "-Wconversion"
+            "-Wsign-conversion"
+            "-Wmissing-prototypes"
+            "-Werror=implicit-function-declaration"
+            "-Werror=return-type"
+            "-Werror=incompatible-pointer-types")
 endif()
 
 include(CTest)
@@ -36,7 +36,7 @@ set(_namespace "${PROJECT_NAME}")
 
 if(BUILD_TESTING)
     file(WRITE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-        "add_library(${_namespace}::epoll-shim ALIAS epoll-shim)\n")
+         "add_library(${_namespace}::epoll-shim ALIAS epoll-shim)\n")
     set(${PROJECT_NAME}_DIR "${PROJECT_BINARY_DIR}")
     add_subdirectory(test)
 endif()
@@ -57,23 +57,23 @@ set(CMAKE_INSTALL_CMAKEBASEDIR
 mark_as_advanced(CMAKE_INSTALL_CMAKEBASEDIR)
 
 configure_file("${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.pc.cmakein"
-    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc" @ONLY)
+               "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc" @ONLY)
 install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc"
-    DESTINATION "${CMAKE_INSTALL_PKGCONFIGDIR}")
+        DESTINATION "${CMAKE_INSTALL_PKGCONFIGDIR}")
 
 set(CMAKE_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/libepoll-shim")
 install(
-    TARGETS epoll-shim
-    EXPORT ${PROJECT_NAME}-targets
-    LIBRARY
-    INCLUDES
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+        TARGETS epoll-shim
+        EXPORT ${PROJECT_NAME}-targets
+        LIBRARY
+        INCLUDES
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 install(DIRECTORY "${PROJECT_BINARY_DIR}/include/" TYPE INCLUDE)
 
 install(
-    EXPORT ${PROJECT_NAME}-targets
-    NAMESPACE "${_namespace}::"
-    DESTINATION "${CMAKE_INSTALL_CMAKEBASEDIR}")
+        EXPORT ${PROJECT_NAME}-targets
+        NAMESPACE "${_namespace}::"
+        DESTINATION "${CMAKE_INSTALL_CMAKEBASEDIR}")
 if(NOT BUILD_SHARED_LIBS)
     set(_deps
         "include(CMakeFindDependencyMacro)\n" #
@@ -81,8 +81,8 @@ if(NOT BUILD_SHARED_LIBS)
         "find_dependency(Threads)\n")
 endif()
 file(
-    WRITE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-    ${_deps}
-    "include(\"\${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}-targets.cmake\")\n")
+        WRITE "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+        ${_deps}
+        "include(\"\${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}-targets.cmake\")\n")
 install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-    DESTINATION "${CMAKE_INSTALL_CMAKEBASEDIR}")
+        DESTINATION "${CMAKE_INSTALL_CMAKEBASEDIR}")

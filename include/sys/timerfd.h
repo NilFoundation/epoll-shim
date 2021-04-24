@@ -15,8 +15,8 @@ extern "C" {
 #define TFD_TIMER_CANCEL_ON_SET (1 << 1)
 
 struct itimerspec {
-    struct timespec it_interval; /* Timer interval */
-    struct timespec it_value;    /* Initial expiration */
+	struct timespec it_interval; /* Timer interval */
+	struct timespec it_value;    /* Initial expiration */
 };
 
 int timerfd_create(int, int);

@@ -20,26 +20,6 @@
 #define ppoll pollts
 #endif
 
-int poll(struct pollfd *a, nfds_t b, int c) {
-    return epoll_shim_poll(a, b, c);
-}
-
-int ppoll(struct pollfd *a, nfds_t b, struct timespec const *c, sigset_t const *d) {
-    return epoll_shim_ppoll(a, b, c, d);
-}
-
-ssize_t write(int a, void const *b, size_t c) {
-    return epoll_shim_write(a, b, c);
-}
-
-ssize_t read(int a, void *b, size_t c) {
-    return epoll_shim_read(a, b, c);
-}
-
-int close(int a) {
-    return epoll_shim_close(a);
-}
-
 static errno_t
 epollfd_close(FDContextMapNode *node)
 {
@@ -230,7 +210,17 @@ epollfd_ctx_wait_or_block(FDContextMapNode *node, /**/
 		usleep(500000);
 #endif
 
+#ifndef __APPLE__
 		int n = ppoll(pfds, nfds, timeout, sigs);
+#else
+		sigset_t origmask;
+		pthread_sigmask(SIG_SETMASK, sigs, &origmask);
+		int n = poll(pfds, nfds,
+		    (timeout == NULL) ?
+			      -1 :
+			      (timeout->tv_sec * 1000 + timeout->tv_nsec / 1000000));
+		pthread_sigmask(SIG_SETMASK, &origmask, NULL);
+#endif
 		if (n < 0) {
 			ec = errno;
 		}

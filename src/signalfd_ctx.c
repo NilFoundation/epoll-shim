@@ -205,7 +205,7 @@ signalfd_ctx_read_impl(SignalFDCtx *signalfd,
 		break;
 	}
 #elif defined(__APPLE__)
-    {
+	{
 		int s = sigwait(&signalfd->sigs, &siginfo.si_signo);
 		ec = s < 0 ? errno : 0;
 		if (ec == 0) {
